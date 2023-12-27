@@ -1,0 +1,178 @@
+ ************************************GIT*GIT*GIT*****************************
+BASIC COMMANDS:
+Working dir--->(add)Staging area--->(commit)local repo--->(push)Remote Repo(github)
+
+Untracked file---->Tracked file------>Committed file------->Remote file
+
+git config --global user.name " name"
+git config --global user.email "email name"
+connecting to remote repo :
+	git remote add origin URL
+ls-list of directories
+
+vim index.txt(creating document)
+:wq -->come out of the file
+touch file1 file2....(Create multiple files)
+cat file.txt(Show file in git) 
+pwd-current working directory
+git init-intializes local repo
+git add . - add files into staging area
+git commit -m"msg" (-a -m ""----for multiple files)
+git log -shows previous commits i.e. history
+$ git config --global core.editor "code --wait"
+$ git config --global --edit
+
+ ==>In many cases, the project creates a lot of logs and other irrelevant files which 
+     are to be ignored. So to ignore those files, we have to put their names in“.gitignore” file.  
+
+touch .gitignore
+echo "filename.ext" >>.gitignore
+#to ignore all files with .log extension
+echo "*.log" > .gitignore
+
+*****************************************************
+ GIT DIFF COMMAND :
+1.to see diffrence bw file content in working dir and staging area
+
+	git diff index.txt
+---->
+diff --git a/file.txt b/file.txt
+index a889f0d..c702d63 100644
+--- a/file.txt
++++ b/file.txt
+@@ -1,2 +1,4 @@
+ hello
+ vishnu
++vardhan
++Goood Morningg
+
+EXPLANATION :
+
+a/file.txt ---source(staging area)
+b/file.txt  ---destination(working dir)
+a889f0d -----hash of the file content from staging/source
+c702d63 -----hash of the file content from dest/workspace
+100644-----git file mode
+ 	100---represents type of file
+	644----file permissions  rw-r-r(owners,groups,users)
+		4-read	
+		2-write 
+		1-execute
+2.to see diffrence bw file content in working dir and last commmit(local repo)
+   * Last commit refered using HEAD
+	git diff HEAD file.txt
+
+3. to see diffrence bw file content  staging and local repo
+  	git diff --staged HEAD file.txt   
+4. to see difference bw file content in specific commit and work dir.
+    	git log --oneline   ---->shows all commit id's
+      git diff d0ff720 file.txt
+5. to see diffrence bw file content in bw specific commit and staging area :
+   	git log --oneline ---->shows all commit id's
+    	git diff --staged d0ff720
+6. to see diffrence bw file content in bw 2 specified commits
+    	git log --oneline ---->shows all commit id's
+    	git diff d0ff7720 d82399 file.txt
+7. To see diffrence bw content in bw 2 branches.
+   master
+   test
+  	git diff master test
+8.To see diffrence bw content in bw local and remote repo's.
+   git diff master origin/master
+************************************************
+ GIT RM COMMAND :
+ ls-files(Shows files in staging area)
+1. Remove files from both statging and work dir
+	git rm file.txt
+	git rm -r .(remove all files)
+2. Remive files from only in staging area
+	git rm --cached file.txt
+3.Remove files from work dir
+	rm file.txt
+*************************************************
+GIT CHECKOUT COMMAND:
+
+We can use checkout command to discard unstaged changes in the tracked files of work dir
+  1.only for work dir
+  2.To discard unstaged changes(files which are not added in staging area) 
+  3.In the tracked files(files which are in staging area)
+ 	git checkout -- file.txt
+  ************************************************
+GIT RESET COMMAND :
+	used to remove changes in staging area.(add<->reset)
+  1.To remove changes from staging area
+  2.To Undo commits at repository level    
+	--->git reset file.txt
+	--->git reset <mode> <commit id>
+MODES	
+---mixed
+---soft
+---hard
+	1) It is default mode
+         To discard commits in the local repo and to discard changes in staging area.
+         It will not touch working directory.
+	   It can revert with 
+				git add .
+				git commit
+	   It removes the commits above given ID(i.e. if 1 is reset then 2,3,4,5 will reset)
+
+      2)It is same as --mixed option, Changes will be discadred in local repo
+        It won't touch work dir and staging area.
+        It can revert with
+				git commit
+	   As changes already present in staging area, we have to commit to revert back.
+ 
+	3) Changes will be removed everywhere(local repo,staging,work repo)
+         No revert back here and hence use carefully
+***********************************************************
+GIT BRANCHING
+
+1.To view available branches
+  	git branch 
+2.To create new branch
+	git branch branchName
+     git branch -d branchName(delete branch)
+3.Switch from one to another branch
+git checkout ==> discard unstaged changes in work dir
+
+ 	git checkout branchname
+creating and switching to branch sametime-
+	git checkout -b branchName
+  -->new branches inherit the master branch
+-->Changes in the master branch cannot be reflected in the new branches.
+****************************************************
+GIT MERGING
+
+1.Fast Forward Merge
+2.Three way Merge
+
+1.
+Master branch----->a.txt   b.txt
+Feature branch---->x.txt   y.txt
+ latest commit is y.txt(C2F)
+In master,     git merge BranchName
+
+2. Coflict occurs here.When same file changed in other branch.
+    If file is not changed ,no problem.
+ *(MERGE Commit is created by GIT)
+******************************************************
+ RESOLVE MERGE CONFLICTS
+  git merge feature--(ERROR)
+  We have resolve manually by opening file.
+  Then make the both files Same either add or reduce code.
+   Then, merge file. 
+********************************************************
+GIT REBASE
+...switch to the feature branch.
+git rebase master (we rebased our feature branch on the Top of master branch)
+git merge feature
+git log --oneline graph
+********************************************************
+GITHUB :
+Github is a host service for repositories
+Mainly three Operations done here :
+		Clone      Push       Pull
+	1.git clone URL --->To get remote repo into local repo
+	2.git pull origin main/master--> Intially already have a file in local and remote.
+        Then file changed in remote repo. To get those changes, use git pull.
+	3.git push origin main/master-->To push files from local to remote repo
